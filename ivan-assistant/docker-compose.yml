@@ -51,15 +51,16 @@ services:
     working_dir: /app
     command: echo "LLM Service placeholder - будет реализован отдельно"
 
-  # STT Service (заглушка для распознавания речи)
+  # STT Service - Speech To Text
   stt-service:
-    image: python:3.11-slim
+    build:
+      context: ./services/stt_service
+      dockerfile: Dockerfile
     ports:
       - "8002:8002"
     volumes:
-      - ./services/stt:/app
-    working_dir: /app
-    command: echo "STT Service placeholder - будет реализован отдельно"
+      - ./services/stt_service:/app
+    command: uvicorn main:app --host 0.0.0.0 --port 8002 --reload
 
   # TTS Service (заглушка для синтеза речи)
   tts-service:
@@ -69,7 +70,7 @@ services:
     volumes:
       - ./services/tts:/app
     working_dir: /app
-    command: echo "TTS Service placeholder - будет реализован отдельно"
+    command: echo "TTS Service placeholder - будет реализован следующим"
 
 volumes:
   postgres_data:
