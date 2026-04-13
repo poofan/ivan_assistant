@@ -1,0 +1,104 @@
+version: '3.8'
+
+services:
+  # Backend API Gateway
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: jarvis-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_NAME=Jarvis Assistant
+      - DEBUG=true
+      - DATABASE_URL=postgresql://jarvis:jarvis_password@db:5432/jarvis_db
+      - REDIS_URL=redis://redis:6379/0
+      - LLM_SERVICE_URL=http://llm-service:8001
+      - STT_SERVICE_URL=http://stt-service:8002
+      - TTS_SERVICE_URL=http://tts-service:8003
+      - SKILLS_SERVICE_URL=http://skills-service:8004
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./backend:/app
+    networks:
+      - jarvis-network
+    restart: unless-stopped
+
+  # PostgreSQL Database
+  db:
+    image: postgres:15-alpine
+    container_name: jarvis-db
+    environment:
+      POSTGRES_USER: jarvis
+      POSTGRES_PASSWORD: jarvis_password
+      POSTGRES_DB: jarvis_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - jarvis-network
+    restart: unless-stopped
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: jarvis-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - jarvis-network
+    restart: unless-stopped
+
+  # LLM Service (заглушка для будущего сервиса)
+  llm-service:
+    image: alpine:latest
+    container_name: jarvis-llm-service
+    command: sleep infinity
+    networks:
+      - jarvis-network
+    profiles:
+      - full
+
+  # STT Service (заглушка для будущего сервиса)
+  stt-service:
+    image: alpine:latest
+    container_name: jarvis-stt-service
+    command: sleep infinity
+    networks:
+      - jarvis-network
+    profiles:
+      - full
+
+  # TTS Service (заглушка для будущего сервиса)
+  tts-service:
+    image: alpine:latest
+    container_name: jarvis-tts-service
+    command: sleep infinity
+    networks:
+      - jarvis-network
+    profiles:
+      - full
+
+  # Skills Service (заглушка для будущего сервиса)
+  skills-service:
+    image: alpine:latest
+    container_name: jarvis-skills-service
+    command: sleep infinity
+    networks:
+      - jarvis-network
+    profiles:
+      - full
+
+networks:
+  jarvis-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:

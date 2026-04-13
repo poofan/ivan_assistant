@@ -1,0 +1,81 @@
+version: '3.8'
+
+services:
+  # Backend API Gateway
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://ivan:ivan_password@db:5432/ivan_assistant
+      - REDIS_URL=redis://redis:6379/0
+      - LOCAL_LLM_URL=http://llm-service:8001
+      - STT_SERVICE_URL=http://stt-service:8002
+      - TTS_SERVICE_URL=http://tts-service:8003
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./backend:/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  # PostgreSQL Database
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: ivan
+      POSTGRES_PASSWORD: ivan_password
+      POSTGRES_DB: ivan_assistant
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  # LLM Service (заглушка для локальной модели)
+  llm-service:
+    image: python:3.11-slim
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./services/llm:/app
+    working_dir: /app
+    command: echo "LLM Service placeholder - будет реализован отдельно"
+
+  # STT Service - Speech To Text
+  stt-service:
+    build:
+      context: ./services/stt_service
+      dockerfile: Dockerfile
+    ports:
+      - "8002:8002"
+    volumes:
+      - ./services/stt_service:/app
+    command: uvicorn main:app --host 0.0.0.0 --port 8002 --reload
+
+  # TTS Service (заглушка для синтеза речи)
+  tts-service:
+    image: python:3.11-slim
+    ports:
+      - "8003:8003"
+    volumes:
+      - ./services/tts:/app
+    working_dir: /app
+    command: echo "TTS Service placeholder - будет реализован следующим"
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  default:
+    name: ivan-assistant-network

@@ -1,0 +1,126 @@
+{
+  "info": {
+    "_postman_id": "ivan-assistant-api",
+    "name": "Ivan Assistant API",
+    "description": "Коллекция для тестирования API голосового ассистента Иван",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Checks",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/health",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "health"]
+            }
+          }
+        },
+        {
+          "name": "Readiness Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/health/ready",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "health", "ready"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Assistant",
+      "item": [
+        {
+          "name": "Process Voice Request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Иван, какая сейчас погода?\",\n  \"user_id\": \"test_user_123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/voice/process",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "voice", "process"]
+            }
+          }
+        },
+        {
+          "name": "Execute Command",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"command\": \"weather\",\n  \"parameters\": {\n    \"location\": \"Moscow\"\n  },\n  \"user_id\": \"test_user_123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/command/execute",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "command", "execute"]
+            }
+          }
+        },
+        {
+          "name": "List Skills",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/skills/list",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "skills", "list"]
+            }
+          }
+        },
+        {
+          "name": "Chat Message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"Привет, Иван! Как дела?\",\n  \"user_id\": \"test_user_123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/chat/message",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "chat", "message"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    }
+  ]
+}

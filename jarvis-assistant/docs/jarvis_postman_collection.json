@@ -1,0 +1,162 @@
+{
+  "info": {
+    "name": "Jarvis Assistant API",
+    "description": "API для тестирования персонального голосового ассистента",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Checks",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/health",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "health"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Readiness Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/health/ready",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "health", "ready"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Assistant",
+      "item": [
+        {
+          "name": "Chat - Greeting",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Привет, Джарвис!\",\n  \"user_id\": \"user_123\",\n  \"session_id\": \"session_001\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/assistant/chat",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "assistant", "chat"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Chat - Weather Query",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Иван, какая погода сейчас у меня\",\n  \"user_id\": \"user_123\",\n  \"session_id\": \"session_001\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/assistant/chat",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "assistant", "chat"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Chat - Time Query",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Который сейчас час?\",\n  \"user_id\": \"user_123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/assistant/chat",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "assistant", "chat"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Chat - Location Query",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Где я сейчас нахожусь?\",\n  \"user_id\": \"user_123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/assistant/chat",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "assistant", "chat"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Voice Command (Text Mode)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"text\": \"Какая погода в Москве?\",\n  \"user_id\": \"user_123\",\n  \"session_id\": \"session_002\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/assistant/voice",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "assistant", "voice"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    }
+  ]
+}
